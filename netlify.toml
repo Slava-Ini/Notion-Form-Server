@@ -1,0 +1,8 @@
+[build]
+    command="npm install && npm run build"
+    functions="lambda"
+    publish="build"
+
+[[redirects]]
+    from = "/"
+    to = "/.netlify/functions/notion-form"
