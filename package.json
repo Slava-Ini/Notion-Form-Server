@@ -8,7 +8,7 @@
     "dev": "concurrently \"npx tsc --watch\" \"nodemon\"",
     "clear": "rimraf build .netlify functions lambda",
     "build": "npm run clear && tsc",
-    "build:lambda": "npx netlify-lambda build src/functions"
+    "build:lambda": "npx netlify-lambda build build/functions"
   },
   "author": "",
   "license": "ISC",

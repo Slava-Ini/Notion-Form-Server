@@ -1,7 +1,6 @@
 [build]
     command="npm install && npm run build && npm run build:lambda"
-    # functions="lambda"
-    functions="build/lambda"
+    functions="lambda"
     publish="build"
 
 [[redirects]]
