@@ -9,6 +9,7 @@ import bodyParser from "body-parser";
 export default function expressApp(functionName: string): Express {
   dotenv.config();
   const app = express();
+  app.use(cors({ origin: "*", credentials: true }));
   const router = express.Router();
 
   // app.use(cors({ credentials: true, origin: true }));
@@ -95,20 +96,19 @@ export default function expressApp(functionName: string): Express {
   // Setup routes
   app.use("/.netlify/functions/notion-form", router);
 
-  const whitelist = ["http://localhost:3000", "http://developer2.com"];
+  // const whitelist = ["http://localhost:3000", "http://developer2.com"];
 
-  const corsOptions = {
-    origin: (origin: any, callback: any) => {
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error());
-      }
-    },
-  };
+  // const corsOptions = {
+  //   origin: (origin: any, callback: any) => {
+  //     if (whitelist.indexOf(origin) !== -1) {
+  //       callback(null, true);
+  //     } else {
+  //       callback(new Error());
+  //     }
+  //   },
+  // };
   // Apply express middlewares
   // router.use(cors({ origin: "http://localhost:3000", credentials: true }));
-  router.use(cors(corsOptions));
   router.use(bodyParser.json());
   router.use(bodyParser.urlencoded({ extended: true }));
 
