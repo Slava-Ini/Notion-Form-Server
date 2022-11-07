@@ -9,11 +9,7 @@ import bodyParser from "body-parser";
 export default function expressApp(functionName: string): Express {
   dotenv.config();
   const app = express();
-  app.use(cors({ origin: "*", credentials: true }));
   const router = express.Router();
-
-  // app.use(cors({ credentials: true, origin: true }));
-  // app.use(bodyParser.json());
 
   const { DATABASE_ID, NOTION_TOKEN, NODE_ENV } = process.env;
 
@@ -108,7 +104,7 @@ export default function expressApp(functionName: string): Express {
   //   },
   // };
   // Apply express middlewares
-  // router.use(cors({ origin: "http://localhost:3000", credentials: true }));
+  router.use(cors({ origin: "*", credentials: true }));
   router.use(bodyParser.json());
   router.use(bodyParser.urlencoded({ extended: true }));
 
