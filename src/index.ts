@@ -96,7 +96,7 @@ export default function expressApp(functionName: string): Express {
   app.use("/.netlify/functions/notion-form", router);
 
   // Apply express middlewares
-  router.use(cors({ origin: "*", credentials: true }));
+  router.use(cors({ origin: "http://localhost:3000", credentials: true }));
   router.use(bodyParser.json());
   router.use(bodyParser.urlencoded({ extended: true }));
 
