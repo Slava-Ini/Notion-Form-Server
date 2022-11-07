@@ -1,4 +1,4 @@
-/* example using https://github.com/dougmoscrop/serverless-http */
+// example using https://github.com/dougmoscrop/serverless-http
 import serverless from "serverless-http";
 import expressApp from "../index";
 
