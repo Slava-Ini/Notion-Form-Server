@@ -38,7 +38,7 @@ export default function expressApp(functionName: string): Express {
 
   // const port = 8000;
 
-  app.get("/", async (_: Request, res: Response) => {
+  router.get("/", async (_: Request, res: Response) => {
     const { results } = await notion.databases.query({
       database_id: DATABASE_ID,
     });
@@ -51,7 +51,7 @@ export default function expressApp(functionName: string): Express {
     res.status(400).send("Couldn't find any fields on provided database");
   });
 
-  app.put("/update", async (req: Request, res: Response) => {
+  router.put("/update", async (req: Request, res: Response) => {
     const { name, cost, currency, category } = req.body;
 
     const result = await notion.pages.create({
@@ -102,7 +102,7 @@ export default function expressApp(functionName: string): Express {
   // Setup routes
   app.use("/.netlify/functions/notion-form", router);
 
-  app.use("", router);
+  // app.use("", router);
 
   // const whitelist = ["http://localhost:3000", "http://developer2.com"];
 

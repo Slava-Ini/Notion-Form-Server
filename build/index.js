@@ -39,7 +39,7 @@ function expressApp(functionName) {
     // app.use(cors({ origin: "*", credentials: true }));
     // app.use(bodyParser.json());
     // const port = 8000;
-    app.get("/", (_, res) => __awaiter(this, void 0, void 0, function* () {
+    router.get("/", (_, res) => __awaiter(this, void 0, void 0, function* () {
         const { results } = yield notion.databases.query({
             database_id: DATABASE_ID,
         });
@@ -49,7 +49,7 @@ function expressApp(functionName) {
         }
         res.status(400).send("Couldn't find any fields on provided database");
     }));
-    app.put("/update", (req, res) => __awaiter(this, void 0, void 0, function* () {
+    router.put("/update", (req, res) => __awaiter(this, void 0, void 0, function* () {
         const { name, cost, currency, category } = req.body;
         const result = yield notion.pages.create({
             parent: {
@@ -94,7 +94,7 @@ function expressApp(functionName) {
     // });
     // Setup routes
     app.use("/.netlify/functions/notion-form", router);
-    app.use("", router);
+    // app.use("", router);
     // const whitelist = ["http://localhost:3000", "http://developer2.com"];
     // const corsOptions = {
     //   origin: (origin: any, callback: any) => {
