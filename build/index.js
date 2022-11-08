@@ -21,8 +21,6 @@ function expressApp(functionName) {
     dotenv_1.default.config();
     const app = (0, express_1.default)();
     const router = express_1.default.Router();
-    // app.use(cors({ credentials: true, origin: true }));
-    // app.use(bodyParser.json());
     const { DATABASE_ID, NOTION_TOKEN, NODE_ENV } = process.env;
     // Set router base path for local dev
     // const routerBasePath =
@@ -38,16 +36,20 @@ function expressApp(functionName) {
     function validateResponse(response) {
         return Boolean(response === null || response === void 0 ? void 0 : response.properties);
     }
-    router.get("/", (_, res) => __awaiter(this, void 0, void 0, function* () {
+    // app.use(cors({ origin: "*", credentials: true }));
+    // app.use(bodyParser.json());
+    // const port = 8000;
+    app.get("/", (_, res) => __awaiter(this, void 0, void 0, function* () {
         const { results } = yield notion.databases.query({
             database_id: DATABASE_ID,
         });
+        console.log("RES:", results);
         if (validateResponse(results[0])) {
             return res.send(results[0].properties);
         }
         res.status(400).send("Couldn't find any fields on provided database");
     }));
-    router.put("/update", (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.put("/update", (req, res) => __awaiter(this, void 0, void 0, function* () {
         const { name, cost, currency, category } = req.body;
         const result = yield notion.pages.create({
             parent: {
@@ -87,10 +89,24 @@ function expressApp(functionName) {
         }
         res.status(400).send("Couldn't update");
     }));
+    // app.listen(port, () => {
+    //   console.log(`App listening on port ${port}`);
+    // });
     // Setup routes
     app.use("/.netlify/functions/notion-form", router);
+    app.use("", router);
+    // const whitelist = ["http://localhost:3000", "http://developer2.com"];
+    // const corsOptions = {
+    //   origin: (origin: any, callback: any) => {
+    //     if (whitelist.indexOf(origin) !== -1) {
+    //       callback(null, true);
+    //     } else {
+    //       callback(new Error());
+    //     }
+    //   },
+    // };
     // Apply express middlewares
-    router.use((0, cors_1.default)());
+    router.use((0, cors_1.default)({ origin: "*", credentials: true }));
     router.use(body_parser_1.default.json());
     router.use(body_parser_1.default.urlencoded({ extended: true }));
     return app;

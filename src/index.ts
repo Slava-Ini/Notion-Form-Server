@@ -33,10 +33,16 @@ export default function expressApp(functionName: string): Express {
     return Boolean(response?.properties);
   }
 
-  router.get("/", async (_: Request, res: Response) => {
+  // app.use(cors({ origin: "*", credentials: true }));
+  // app.use(bodyParser.json());
+
+  // const port = 8000;
+
+  app.get("/", async (_: Request, res: Response) => {
     const { results } = await notion.databases.query({
       database_id: DATABASE_ID,
     });
+    console.log("RES:", results);
 
     if (validateResponse(results[0])) {
       return res.send(results[0].properties);
@@ -45,7 +51,7 @@ export default function expressApp(functionName: string): Express {
     res.status(400).send("Couldn't find any fields on provided database");
   });
 
-  router.put("/update", async (req: Request, res: Response) => {
+  app.put("/update", async (req: Request, res: Response) => {
     const { name, cost, currency, category } = req.body;
 
     const result = await notion.pages.create({
@@ -89,8 +95,14 @@ export default function expressApp(functionName: string): Express {
     res.status(400).send("Couldn't update");
   });
 
+  // app.listen(port, () => {
+  //   console.log(`App listening on port ${port}`);
+  // });
+
   // Setup routes
   app.use("/.netlify/functions/notion-form", router);
+
+  app.use("", router);
 
   // const whitelist = ["http://localhost:3000", "http://developer2.com"];
 
@@ -107,6 +119,5 @@ export default function expressApp(functionName: string): Express {
   router.use(cors({ origin: "*", credentials: true }));
   router.use(bodyParser.json());
   router.use(bodyParser.urlencoded({ extended: true }));
-
   return app;
 }

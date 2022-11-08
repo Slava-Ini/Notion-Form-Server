@@ -7,9 +7,11 @@
     from = "/"
     to = "/.netlify/functions/notion-form"
     status = 200
+    force = true
+    headers = {X-From = "Netlify"}
 
 [[headers]]
   for = "/*"
     [headers.values]
-    Access-Control-Allow-Origin = *
+    Access-Control-Allow-Origin = "*"
       
