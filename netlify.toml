@@ -1,6 +1,6 @@
 [build]
     command="npm install && npm run build && npm run build:lambda"
-    functions="lambda"
+    functions="lambda/"
     publish="build"
 
 [[redirects]]
@@ -8,7 +8,13 @@
     to = "/.netlify/functions/notion-form"
     status = 200
     force = true
-    headers = {X-From = "Netlify"}
+    # headers = {X-From = "Netlify"}
+
+[[redirects]]
+    from = "/update"
+    to = "/.netlify/functions/notion-form/update"
+    status = 200
+    force = true
 
 [[headers]]
   for = "/*"
