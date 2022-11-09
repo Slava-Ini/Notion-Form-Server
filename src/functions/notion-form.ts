@@ -20,6 +20,8 @@ const handler: Handler = async () => {
     auth: NOTION_TOKEN,
   });
 
+  console.log("ENV VAR: ", process.env);
+
   if (!ENDPOINT_GET || !DATABASE_ID || !NOTION_TOKEN) {
     return {
       statusCode: 500,
@@ -30,6 +32,7 @@ const handler: Handler = async () => {
   const { results } = await notion.databases.query({
     database_id: DATABASE_ID,
   });
+  console.log("RES: ", results);
 
   if (validateResponse(results[0])) {
     return {
