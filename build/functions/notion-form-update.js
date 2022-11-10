@@ -28,16 +28,17 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     if (!ENDPOINT_PUT || !DATABASE_ID || !NOTION_TOKEN) {
         return {
             statusCode: 500,
-            response: "Couldn't get environment variables",
+            body: "Couldn't get environment variables",
         };
     }
     if (!body) {
         return {
             statusCode: 400,
-            response: "Request body can not be empty",
+            body: "Request body can not be empty",
         };
     }
     const { name, cost, currency, category } = JSON.parse(body);
+    console.log("BODY: ", body);
     const result = yield notion.pages.create({
         parent: {
             database_id: DATABASE_ID,
@@ -71,6 +72,7 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
             },
         },
     });
+    console.log("BODY: ", body);
     if (result) {
         return {
             statusCode: 200,
@@ -82,7 +84,7 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     return {
         statusCode: 400,
         headers: constants_1.HEADERS,
-        response: "Couldn't update database",
+        body: "Couldn't update database",
     };
 });
 exports.handler = handler;

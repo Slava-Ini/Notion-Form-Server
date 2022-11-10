@@ -12,8 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
 const client_1 = require("@notionhq/client");
 const constants_1 = require("../constants");
-// TODO: remove node fetch from npm
-// import fetch from "node-fetch";
 function validateResponse(response) {
     return Boolean(response === null || response === void 0 ? void 0 : response.properties);
 }
@@ -26,7 +24,7 @@ const handler = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!ENDPOINT_GET || !DATABASE_ID || !NOTION_TOKEN) {
         return {
             statusCode: 500,
-            response: "Couldn't get environment variables",
+            body: "Couldn't get environment variables",
         };
     }
     const { results } = yield notion.databases.query({
@@ -42,7 +40,7 @@ const handler = () => __awaiter(void 0, void 0, void 0, function* () {
     return {
         statusCode: 400,
         headers: constants_1.HEADERS,
-        response: "Couldn't find any fields on provided database",
+        body: "Couldn't find any fields on provided database",
     };
 });
 exports.handler = handler;

@@ -12,7 +12,7 @@
 
 [[redirects]]
     from = "/update"
-    to = "/.netlify/functions/notion-form/update"
+    to = "/.netlify/functions/notion-form-update"
     status = 200
     force = true
 

@@ -3,7 +3,7 @@ import { Client } from "@notionhq/client";
 import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { HEADERS } from "../constants";
 // TODO: remove node fetch from npm
-// import fetch from "node-fetch";
+import fetch from "node-fetch";
 
 function validateResponse(
   response: PageObjectResponse | Partial<PageObjectResponse>
@@ -20,19 +20,16 @@ const handler: Handler = async () => {
     auth: NOTION_TOKEN,
   });
 
-  console.log("ENV VAR: ", process.env);
-
   if (!ENDPOINT_GET || !DATABASE_ID || !NOTION_TOKEN) {
     return {
       statusCode: 500,
-      response: "Couldn't get environment variables",
+      body: "Couldn't get environment variables",
     };
   }
 
   const { results } = await notion.databases.query({
     database_id: DATABASE_ID,
   });
-  console.log("RES: ", results);
 
   if (validateResponse(results[0])) {
     return {
@@ -45,7 +42,7 @@ const handler: Handler = async () => {
   return {
     statusCode: 400,
     headers: HEADERS,
-    response: "Couldn't find any fields on provided database",
+    body: "Couldn't find any fields on provided database",
   };
 };
 

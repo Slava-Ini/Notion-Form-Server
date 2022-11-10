@@ -22,18 +22,20 @@ const handler: Handler = async (event) => {
   if (!ENDPOINT_PUT || !DATABASE_ID || !NOTION_TOKEN) {
     return {
       statusCode: 500,
-      response: "Couldn't get environment variables",
+      body: "Couldn't get environment variables",
     };
   }
 
   if (!body) {
     return {
       statusCode: 400,
-      response: "Request body can not be empty",
+      body: "Request body can not be empty",
     };
   }
 
   const { name, cost, currency, category } = JSON.parse(body);
+
+  console.log("BODY: ", body);
 
   const result = await notion.pages.create({
     parent: {
@@ -68,6 +70,7 @@ const handler: Handler = async (event) => {
       },
     },
   });
+  console.log("BODY: ", body);
 
   if (result) {
     return {
@@ -81,7 +84,7 @@ const handler: Handler = async (event) => {
   return {
     statusCode: 400,
     headers: HEADERS,
-    response: "Couldn't update database",
+    body: "Couldn't update database",
   };
 };
 
