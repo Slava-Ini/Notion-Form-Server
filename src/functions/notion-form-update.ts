@@ -5,6 +5,14 @@ import { HEADERS } from "../constants";
 const handler: Handler = async (event) => {
   const { httpMethod, body } = event;
 
+  if (httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200, // <-- Must be 200 otherwise pre-flight call fails
+      headers: HEADERS,
+      body: "This was a preflight call!",
+    };
+  }
+
   if (httpMethod !== "PUT") {
     return {
       statusCode: 501,

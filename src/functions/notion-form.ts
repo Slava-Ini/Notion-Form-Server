@@ -11,7 +11,7 @@ function validateResponse(
   return Boolean(response?.properties);
 }
 
-const handler: Handler = async () => {
+const handler: Handler = async ({ httpMethod }) => {
   // const { path, httpMethod, headers, queryStringParameters, body } = event;
 
   const { ENDPOINT_GET, NOTION_TOKEN, DATABASE_ID } = process.env;
@@ -36,6 +36,14 @@ const handler: Handler = async () => {
       statusCode: 200,
       headers: HEADERS,
       body: JSON.stringify(results[0].properties),
+    };
+  }
+
+  if (httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200, // <-- Must be 200 otherwise pre-flight call fails
+      headers: HEADERS,
+      body: "This was a preflight call!",
     };
   }
 

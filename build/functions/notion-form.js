@@ -15,7 +15,7 @@ const constants_1 = require("../constants");
 function validateResponse(response) {
     return Boolean(response === null || response === void 0 ? void 0 : response.properties);
 }
-const handler = () => __awaiter(void 0, void 0, void 0, function* () {
+const handler = ({ httpMethod }) => __awaiter(void 0, void 0, void 0, function* () {
     // const { path, httpMethod, headers, queryStringParameters, body } = event;
     const { ENDPOINT_GET, NOTION_TOKEN, DATABASE_ID } = process.env;
     const notion = new client_1.Client({
@@ -35,6 +35,13 @@ const handler = () => __awaiter(void 0, void 0, void 0, function* () {
             statusCode: 200,
             headers: constants_1.HEADERS,
             body: JSON.stringify(results[0].properties),
+        };
+    }
+    if (httpMethod === "OPTIONS") {
+        return {
+            statusCode: 200,
+            headers: constants_1.HEADERS,
+            body: "This was a preflight call!",
         };
     }
     return {

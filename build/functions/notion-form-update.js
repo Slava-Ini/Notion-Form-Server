@@ -14,6 +14,13 @@ const client_1 = require("@notionhq/client");
 const constants_1 = require("../constants");
 const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     const { httpMethod, body } = event;
+    if (httpMethod === "OPTIONS") {
+        return {
+            statusCode: 200,
+            headers: constants_1.HEADERS,
+            body: "This was a preflight call!",
+        };
+    }
     if (httpMethod !== "PUT") {
         return {
             statusCode: 501,
