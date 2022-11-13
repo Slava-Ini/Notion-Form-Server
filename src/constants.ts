@@ -4,8 +4,3 @@ export const HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
 };
-
-export enum Method {
-  Get = "GET",
-  Put = "PUT",
-}

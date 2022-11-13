@@ -11,5 +11,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "build", "lambda"]
+  "exclude": ["node_modules", "build", "lambda", ".netlify"]
 }

@@ -1,9 +1,7 @@
-import { Handler } from "@netlify/functions";
 import { Client } from "@notionhq/client";
 import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import { Handler } from "@netlify/functions";
 import { HEADERS } from "../constants";
-// TODO: remove node fetch from npm
-import fetch from "node-fetch";
 
 function validateResponse(
   response: PageObjectResponse | Partial<PageObjectResponse>
@@ -12,9 +10,9 @@ function validateResponse(
 }
 
 const handler: Handler = async ({ httpMethod }) => {
-  // const { path, httpMethod, headers, queryStringParameters, body } = event;
-
+  // --- Configure your environment variables on netlify
   const { ENDPOINT_GET, NOTION_TOKEN, DATABASE_ID } = process.env;
+  // ---
 
   const notion = new Client({
     auth: NOTION_TOKEN,
@@ -39,13 +37,15 @@ const handler: Handler = async ({ httpMethod }) => {
     };
   }
 
+  // --- Preflight is not mandatory
   if (httpMethod === "OPTIONS") {
     return {
-      statusCode: 200, // <-- Must be 200 otherwise pre-flight call fails
+      statusCode: 200,
       headers: HEADERS,
       body: "This was a preflight call!",
     };
   }
+  // ---
 
   return {
     statusCode: 400,

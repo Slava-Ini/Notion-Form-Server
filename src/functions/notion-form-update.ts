@@ -3,25 +3,8 @@ import { Client } from "@notionhq/client";
 import { HEADERS } from "../constants";
 
 const handler: Handler = async (event) => {
-  const { httpMethod, body } = event;
-
-  if (httpMethod === "OPTIONS") {
-    return {
-      statusCode: 200, // <-- Must be 200 otherwise pre-flight call fails
-      headers: HEADERS,
-      body: "This was a preflight call!",
-    };
-  }
-
-  if (httpMethod !== "PUT") {
-    return {
-      statusCode: 501,
-      body: JSON.stringify({ message: "Not Implemented" }),
-      headers: { "content-type": "application/json" },
-    };
-  }
-
   const { ENDPOINT_PUT, NOTION_TOKEN, DATABASE_ID } = process.env;
+  const { httpMethod, body } = event;
 
   const notion = new Client({
     auth: NOTION_TOKEN,
@@ -34,6 +17,24 @@ const handler: Handler = async (event) => {
     };
   }
 
+  // --- Preflight handler is not mandatory
+  if (httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: HEADERS,
+      body: "This was a preflight call!",
+    };
+  }
+  // ---
+
+  if (httpMethod !== "PUT") {
+    return {
+      statusCode: 501,
+      body: JSON.stringify({ message: "Not Implemented" }),
+      headers: { "content-type": "application/json" },
+    };
+  }
+
   if (!body) {
     return {
       statusCode: 400,
@@ -43,8 +44,7 @@ const handler: Handler = async (event) => {
 
   const { name, cost, currency, category } = JSON.parse(body);
 
-  console.log("BODY: ", body);
-
+  // --- Change the schema to your own
   const result = await notion.pages.create({
     parent: {
       database_id: DATABASE_ID,
@@ -78,7 +78,7 @@ const handler: Handler = async (event) => {
       },
     },
   });
-  console.log("BODY: ", body);
+  // ---
 
   if (result) {
     return {

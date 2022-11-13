@@ -1,5 +1,12 @@
+# Modules
 node_modules/
-.env
+
+# Builds
+build/
+lambda/
 
 # Local Netlify folder
 .netlify
+
+# Environment Variables
+.env
